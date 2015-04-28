@@ -6,7 +6,8 @@ var WidgetsStore = require('../stores/widgetsStore');
 var WidgetRepository = require('../widgets/repository');
 
 module.exports = React.createOwnerClass({
-    registerOwnerProps: function() { },
+    // workaround for https://github.com/TuxedoJS/TuxedoJS/issues/170
+    registerOwnerProps: function() {},
     connectOwnerToStore: function() {
         return {
             store: WidgetsStore,
