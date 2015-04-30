@@ -21,6 +21,7 @@ System.config({
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
     "q": "npm:q@2.0.3",
     "react": "npm:react@0.13.2",
+    "react-async": "npm:react-async@2.1.0",
     "react-router": "npm:react-router@0.13.2",
     "reflux": "npm:reflux@0.2.7",
     "github:floatdrop/plugin-jsx@1.1.0": {
@@ -374,6 +375,10 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:react-async@2.1.0": {
+      "ascii-json": "npm:ascii-json@0.2.0",
+      "react": "npm:react@0.13.2"
     },
     "npm:react-router@0.13.2": {
       "classnames": "npm:classnames@1.1.4",

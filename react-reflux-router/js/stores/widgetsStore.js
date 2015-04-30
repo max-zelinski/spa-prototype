@@ -1,4 +1,5 @@
-var Reflux = require('reflux');
+var Reflux = require('reflux'),
+		Q = require('q');
 
 var WidgetsApi = require('../api/widgetsApi');
 
@@ -6,17 +7,15 @@ module.exports = Reflux.createStore({
 	_widgets: [],
 	getWidgets: function() {
 		if (this._widgets.length !== 0) {
-			return this._widgets;
+			return Q(this._widgets);
 		}
 
 		var that = this;
-		WidgetsApi.getWidgets().then(function(widgets) {
+		return WidgetsApi.getWidgets().then(function(widgets) {
 			that._widgets = widgets;
-			that.trigger(that._widgets);
+			return widgets;
 		}).catch(function(err) {
-			console.log('error loading widgets: ' + err);
+			console.log(err);
 		});
-
-		return [];
 	}
 });

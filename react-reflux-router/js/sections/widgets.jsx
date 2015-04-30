@@ -1,28 +1,32 @@
-var React = require('react'),
-Reflux = require('reflux');
+var Q = require('q'),
+		React = require('react'),
+		Reflux = require('reflux'),
+		ReactAsync = require('react-async');
 
 var Store = require('../stores/widgetsStore'),
 		Repository = require('../widgets/repository'),
 		Actions = require('../actions/widgetsActions');
 
-module.exports = React.createClass({
-	mixins: [Reflux.connect(Store, 'widgets')],
-	getInitialState: function() {
-		return {
-			widgets: Store.getWidgets()
-		};
+var Widgets = React.createClass({
+	mixins: [
+		Reflux.listenTo(Store, 'onWidgetsUpdated'),
+		ReactAsync.Mixin
+	],
+	getInitialStateAsync: function(state) {
+		console.log('getInitialStateAsync');
+		Store.getWidgets().then(function(widgets) {
+			console.log('getWidgets');
+			state(null, {
+				widgets: widgets
+			});
+		});
 	},
-	onAddWidgetClick: function(e) {
-		e.preventDefault();
-
-		var widget = {
-			id: this.state.widgets.length,
-			type: 'simple-widget'
-		};
-
-		Actions.add(widget);
+	onWidgetsUpdated: function(widgets) {
+		console.log('updated');
+		this.setState({widgets: widgets});
 	},
 	render: function() {
+		console.log('render');
 		var widgets = this.state.widgets;
 		var widgetsEl = widgets.map(function(widget) {
 			return React.createElement(Repository.getWidget(widget.type), {key: widget.id});
@@ -31,8 +35,18 @@ module.exports = React.createClass({
 			<div>
 				<h1>Widgets</h1>
 				<a href='' onClick={this.onAddWidgetClick}>Add widget</a>
-				{widgets.length === 0 ? <div>loading</div> : widgetsEl}
+				{widgetsEl}
 			</div>
 		);
 	}
+});
+
+module.exports = React.createClass({
+  render: function() {
+    return (
+      <ReactAsync.Preloaded preloader={<div>Loading</div>}>
+        <Widgets/>
+      </ReactAsync.Preloaded>
+    );
+  }
 });

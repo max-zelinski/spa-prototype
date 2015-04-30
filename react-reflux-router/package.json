@@ -5,6 +5,7 @@
       "jsx": "github:floatdrop/plugin-jsx@^1.1.0",
       "q": "npm:q@^2.0.3",
       "react": "npm:react@^0.13.2",
+      "react-async": "npm:react-async@^2.1.0",
       "react-router": "npm:react-router@^0.13.2",
       "reflux": "npm:reflux@^0.2.7"
     },
