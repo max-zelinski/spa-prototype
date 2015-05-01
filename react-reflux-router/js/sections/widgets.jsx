@@ -13,21 +13,18 @@ var Widgets = React.createClass({
     ReactAsync.Mixin
   ],
   getInitialStateAsync: function(state) {
-    console.log('getInitialStateAsync');
     Store.getWidgets().then(function(widgets) {
-      console.log('getWidgets');
       state(null, {
         widgets: widgets
       });
     });
   },
-  onWidgetsUpdated: function(widgets) {
-    console.log('updated');
-    this.setState({widgets: widgets});
+  onWidgetsUpdated: function(state) {
+    this.setState({widgets: state.widgets});
   },
   onAddWidgetClick: function(e) {
     e.preventDefault();
-    
+
     var widget = {
       id: this.state.widgets.length,
       type: 'simple-widget'
@@ -35,7 +32,6 @@ var Widgets = React.createClass({
     Actions.add(widget);
   },
   render: function() {
-    console.log('render');
     var widgets = this.state.widgets;
     var widgetsEl = widgets.map(function(widget) {
       return React.createElement(Repository.getWidget(widget.type), {key: widget.id});

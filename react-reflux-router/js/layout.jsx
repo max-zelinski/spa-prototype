@@ -10,6 +10,7 @@ module.exports = React.createClass({
                     <ul>
                         <li><Link to='/widgets'>Widgets</Link></li>
                         <li><Link to='/payments'>Payments</Link></li>
+                        <li><Link to='/accounts'>Accounts</Link></li>
                     </ul>
                 </div>
 

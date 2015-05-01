@@ -1,9 +1,11 @@
 var SimpleWidget = require('./simple-widget.jsx!'),
-    ComplexWidget = require('./complex-widget.jsx!');
+    ComplexWidget = require('./complex-widget.jsx!'),
+    PaymentsWidget = require('./paymentsWidget.jsx!');
 
 var repository = {
     'simple-widget': SimpleWidget,
-    'complex-widget': ComplexWidget
+    'complex-widget': ComplexWidget,
+    'payments-widget': PaymentsWidget
 };
 
 module.exports.getWidget = function(name) {
