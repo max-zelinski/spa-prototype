@@ -5,34 +5,32 @@ var Api = require('../api/accountsApi'),
     Actions = require('../actions/accountsActions');
 
 module.exports = Reflux.createStore({
-	_state: {
-		currentAccount: null,
-    accounts: []
-	},
+	_currentAccount: null,
+  _accounts: [],
 	init: function() {
 		this.listenTo(Actions.selectCurrentAccount, this.onSelectCurrentAccount);
     this.listenTo(Actions.add, this.onAdd);
 	},
 	getCurrentAccount: function() {
-		return this._state.currentAccount;
+		return this._currentAccount;
 	},
   getAllAccounts: function() {
-    if (this._state.accounts.length !== 0) {
-      return Q(this._state.accounts);
+    if (this._accounts.length !== 0) {
+      return Q(this._accounts);
     }
 
     var that = this;
     return Api.getAllAccounts().then(function(accounts) {
-      that._state.accounts = accounts;
+      that._accounts = accounts;
       return accounts;
     });
   },
 	onSelectCurrentAccount: function(newCurrentAccount) {
-		this._state.currentAccount = newCurrentAccount;
-		this.trigger(this._state);
+		this._currentAccount = newCurrentAccount;
+		this.trigger();
 	},
   onAdd: function(account) {
-    this._state.accounts.push(account);
-		this.trigger(this._state);
+    this._accounts.push(account);
+		this.trigger();
   }
 });

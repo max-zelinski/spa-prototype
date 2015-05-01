@@ -17,10 +17,11 @@ var Accounts = React.createClass({
 			});
 		});
 	},
-  onAccountsUpdated: function(state) {
-		this.setState({
-      accounts: state.accounts
-		});
+  onAccountsUpdated: function() {
+		var that = this;
+    this.getInitialStateAsync(function(_, state) {
+      that.setState(state);
+    });
 	},
   addAccount: function(e) {
     e.preventDefault();

@@ -17,8 +17,9 @@ var PaymentsWidget = React.createClass({
     });
   },
   onPaymentsUpdated: function(state) {
-    this.setState({
-      payments: state.latestPayments
+    var that = this;
+    this.getInitialStateAsync(function(_, state) {
+      that.setState(state);
     });
   },
   render: function() {

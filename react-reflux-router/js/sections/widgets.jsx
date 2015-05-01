@@ -19,8 +19,11 @@ var Widgets = React.createClass({
       });
     });
   },
-  onWidgetsUpdated: function(state) {
-    this.setState({widgets: state.widgets});
+  onWidgetsUpdated: function() {
+    var that = this;
+    this.getInitialStateAsync(function(_, state) {
+      that.setState(state);
+    });
   },
   onAddWidgetClick: function(e) {
     e.preventDefault();
