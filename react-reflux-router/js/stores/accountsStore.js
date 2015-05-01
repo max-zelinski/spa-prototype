@@ -8,11 +8,11 @@ module.exports = Reflux.createStore({
 	_currentAccount: null,
   _accounts: [],
 	init: function() {
-		this.listenTo(Actions.selectCurrentAccount, this.onSelectCurrentAccount);
+		this.listenTo(Actions.changeCurrentAccount, this.onChangeCurrentAccount);
     this.listenTo(Actions.add, this.onAdd);
 	},
 	getCurrentAccount: function() {
-		return this._currentAccount;
+		return Q(this._currentAccount);
 	},
   getAllAccounts: function() {
     if (this._accounts.length !== 0) {
@@ -25,7 +25,7 @@ module.exports = Reflux.createStore({
       return accounts;
     });
   },
-	onSelectCurrentAccount: function(newCurrentAccount) {
+	onChangeCurrentAccount: function(newCurrentAccount) {
 		this._currentAccount = newCurrentAccount;
 		this.trigger();
 	},

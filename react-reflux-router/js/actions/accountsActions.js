@@ -1,3 +1,3 @@
 var Reflux = require('reflux');
 
-module.exports = Reflux.createActions(['selectCurrentAccount', 'add']);
+module.exports = Reflux.createActions(['changeCurrentAccount', 'add']);
