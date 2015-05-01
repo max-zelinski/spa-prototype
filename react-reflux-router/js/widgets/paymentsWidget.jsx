@@ -1,74 +1,63 @@
 var React = require('react'),
     Reflux = require('reflux'),
-    ReactAsync = require('react-async'),
     Q = require('q');
 
 var PaymentsStore = require('../stores/paymentsStore'),
     AccountsStore = require('../stores/accountsStore');
 
-var PaymentsWidget = React.createClass({
+module.exports = React.createClass({
   mixins: [
     Reflux.listenTo(PaymentsStore, 'onStoreUpdated'),
-    Reflux.listenTo(AccountsStore, 'onStoreUpdated'),
-    ReactAsync.Mixin
+    Reflux.listenTo(AccountsStore, 'onStoreUpdated')
   ],
-  getInitialStateAsync: function(state) {
-    Q.all([
-      AccountsStore.getCurrentAccount(),
-      PaymentsStore.getLatestPayments(),
-      PaymentsStore.getCurrentAccountPayments()
-    ]).spread(function(currentAccount, latestPayments, currentAccountPayments) {
-      state(null, {
-        currentAccount: currentAccount,
-        latestPayments: latestPayments,
-        currentAccountPayments: currentAccountPayments
-      });
-    }).catch(function(err) {
-      console.log(err);
-    });
+  getInitialState: function() {
+    return {
+      currentAccount: AccountsStore.getCurrentAccount(),
+      latestPayments: PaymentsStore.getLatestPayments(),
+      currentAccountPayments: PaymentsStore.getCurrentAccountPayments()
+    };
   },
-  onStoreUpdated: function(state) {
-    var that = this;
-    this.getInitialStateAsync(function(_, state) {
-      that.setState(state);
-    });
+  onStoreUpdated: function() {
+    this.setState(this.getInitialState());
   },
   render: function() {
-    var currentAccountPayments;
-    if (this.state.currentAccount !== null) {
-      currentAccountPayments = (
+    if (this.state.currentAccount === 'loading' ||
+        this.state.latestPayments === 'loading' ||
+        this.state.currentAccountPayments === 'loading') {
+      return (
+				<div>
+					<h1>Payments Widget</h1>
+					<p>Loading...</p>
+				</div>
+			);
+		}
+    else {
+      var currentAccountPayments;
+      if (this.state.currentAccount !== null) {
+        currentAccountPayments = (
+          <div>
+            <p>Current account: {this.state.currentAccount.name}</p>
+            <ul>
+              {this.state.currentAccountPayments.map(function(payment) {
+                return (<li key={payment.id}>{payment.name}</li>);
+              })}
+            </ul>
+          </div>
+        );
+      }
+
+      return (
         <div>
-          <p>Current account: {this.state.currentAccount.name}</p>
+          <h2>Payments Widget</h2>
+          <p>Latest payments:</p>
           <ul>
-            {this.state.currentAccountPayments.map(function(payment) {
+            {this.state.latestPayments.map(function(payment) {
               return (<li key={payment.id}>{payment.name}</li>);
             })}
           </ul>
+          {currentAccountPayments}
         </div>
       );
     }
-
-    return (
-      <div>
-        <h2>Payments Widget</h2>
-        <p>Latest payments:</p>
-        <ul>
-          {this.state.latestPayments.map(function(payment) {
-            return (<li key={payment.id}>{payment.name}</li>);
-          })}
-        </ul>
-        {currentAccountPayments}
-      </div>
-    );
-  }
-});
-
-module.exports = React.createClass({
-  render: function() {
-    return (
-      <ReactAsync.Preloaded preloader={<div>Loading</div>}>
-        <PaymentsWidget/>
-      </ReactAsync.Preloaded>
-    );
   }
 });

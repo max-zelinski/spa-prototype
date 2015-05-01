@@ -1,27 +1,18 @@
 var React = require('react'),
-		Reflux = require('reflux'),
-		ReactAsync = require('react-async');
+		Reflux = require('reflux');
 
 var Store = require('../stores/accountsStore'),
     Actions = require('../actions/accountsActions');
 
-var Accounts = React.createClass({
-  mixins: [
-    Reflux.listenTo(Store, 'onAccountsUpdated'),
-    ReactAsync.Mixin
-  ],
-  getInitialStateAsync: function(state) {
-		Store.getAllAccounts().then(function(accounts) {
-			state(null, {
-				accounts: accounts
-			});
-		});
+module.exports = React.createClass({
+  mixins: [Reflux.listenTo(Store, 'onAccountsUpdated')],
+	getInitialState: function() {
+		return {
+			accounts: Store.getAllAccounts()
+		};
 	},
   onAccountsUpdated: function() {
-		var that = this;
-    this.getInitialStateAsync(function(_, state) {
-      that.setState(state);
-    });
+		this.setState(this.getInitialState());
 	},
   addAccount: function(e) {
     e.preventDefault();
@@ -34,27 +25,27 @@ var Accounts = React.createClass({
     Actions.add(account);
   },
   render: function() {
-    return (
-      <div>
-        <h1>Accounts</h1>
-        <a href='' onClick={this.addAccount}>Add account</a>
-        <p>Accounts:</p>
-        <ul>
-          {this.state.accounts.map(function(account) {
-            return <li key={account.id}>{account.name}</li>;
-          })}
-        </ul>
-      </div>
-    );
-  }
-});
-
-module.exports = React.createClass({
-  render: function() {
-    return (
-      <ReactAsync.Preloaded preloader={<div>Loading</div>}>
-        <Accounts/>
-      </ReactAsync.Preloaded>
-    );
+		if (this.state.accounts === null) {
+			return (
+				<div>
+					<h1>Accounts</h1>
+					<p>Loading...</p>
+				</div>
+			);
+		}
+		else {
+			return (
+	      <div>
+	        <h1>Accounts</h1>
+	        <a href='' onClick={this.addAccount}>Add account</a>
+	        <p>Accounts:</p>
+	        <ul>
+	          {this.state.accounts.map(function(account) {
+	            return <li key={account.id}>{account.name}</li>;
+	          })}
+	        </ul>
+	      </div>
+	    );
+		}
   }
 });

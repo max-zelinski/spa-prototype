@@ -5,20 +5,21 @@ var Api = require('../api/widgetsApi'),
 		Actions = require('../actions/widgetsActions');
 
 module.exports = Reflux.createStore({
-  _widgets: [],
+  _widgets: null,
 	init: function() {
 		this.listenTo(Actions.add, this.onWidgetAdd);
 	},
   getWidgets: function() {
-    if (this._widgets.length !== 0) {
-      return Q(this._widgets);
+    if (this._widgets !== null) {
+      return this._widgets;
     }
 
     var that = this;
-    return Api.getWidgets().then(function(widgets) {
+    Api.getWidgets().then(function(widgets) {
       that._widgets = widgets;
-      return widgets;
+      that.trigger();
     });
+    return 'loading';
   },
 	onWidgetAdd: function(widget) {
 		this._widgets.push(widget);

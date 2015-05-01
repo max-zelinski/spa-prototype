@@ -6,27 +6,16 @@ var React = require('react'),
 var Store = require('../stores/accountsStore'),
     Actions = require('../actions/accountsActions');
 
-var AccountsWidget = React.createClass({
-  mixins: [
-    Reflux.listenTo(Store, 'onAccountsUpdated'),
-    ReactAsync.Mixin
-  ],
-  getInitialStateAsync: function(state) {
-    Q.all([
-      Store.getAllAccounts(),
-      Store.getCurrentAccount()
-    ]).spread(function(accounts, currentAccount) {
-      state(null, {
-        accounts: accounts,
-        currentAccount: currentAccount
-      });
-    });
+module.exports = React.createClass({
+  mixins: [Reflux.listenTo(Store, 'onAccountsUpdated')],
+  getInitialState: function() {
+    return {
+      accounts: Store.getAllAccounts(),
+      currentAccount: Store.getCurrentAccount()
+    };
   },
   onAccountsUpdated: function() {
-		var that = this;
-    this.getInitialStateAsync(function(_, state) {
-      that.setState(state);
-    });
+    this.setState(this.getInitialState());
 	},
   changeCurrentAccount: function(e) {
     e.preventDefault();
@@ -45,37 +34,37 @@ var AccountsWidget = React.createClass({
     });
   },
   render: function() {
-    var currentAccount = this.state.currentAccount;
-    var currentAccountId = currentAccount !== null ? currentAccount.id : 'empty';
-    return (
-      <div>
-        <h2>Accounts Widget</h2>
+    if (this.state.accounts === 'loading' ||
+        this.state.currentAccount === 'loading') {
+			return (
+				<div>
+					<h1>Payments Widget</h1>
+					<p>Loading...</p>
+				</div>
+			);
+		}
+    else {
+      var currentAccount = this.state.currentAccount;
+      var currentAccountId = currentAccount !== null ? currentAccount.id : 'empty';
+      return (
+        <div>
+          <h2>Accounts Widget</h2>
+          <p>Accounts:</p>
+          <ul>
+            {this.state.accounts.map(function(account) {
+              return <li key={account.id}>{account.name}</li>;
+            })}
+          </ul>
 
-        <p>Accounts:</p>
-        <ul>
-          {this.state.accounts.map(function(account) {
-            return <li key={account.id}>{account.name}</li>;
-          })}
-        </ul>
-
-        <span>Current account:</span>
-        <select onChange={this.changeCurrentAccount} value={currentAccountId}>
-          <option value='empty'/>
-          {this.state.accounts.map(function(account){
-            return <option key={account.id} value={account.id}>{account.name}</option>;
-          })}
-        </select>
-      </div>
-    );
-  }
-});
-
-module.exports = React.createClass({
-  render: function() {
-    return (
-      <ReactAsync.Preloaded preloader={<div>Loading</div>}>
-        <AccountsWidget/>
-      </ReactAsync.Preloaded>
-    );
+          <span>Current account:</span>
+          <select onChange={this.changeCurrentAccount} value={currentAccountId}>
+            <option value='empty'/>
+            {this.state.accounts.map(function(account){
+              return <option key={account.id} value={account.id}>{account.name}</option>;
+            })}
+          </select>
+        </div>
+      );
+    }
   }
 });
