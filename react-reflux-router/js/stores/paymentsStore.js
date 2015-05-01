@@ -6,15 +6,13 @@ var Api = require('../api/paymentsApi'),
 		AccountsStore = require('./accountsStore');
 
 module.exports = Reflux.createStore({
-	_state: {
-    latestPayments: []
-  },
+	_latestPayments: [],
 	init: function() {
 		this.listenTo(AccountsStore, this.onAccountsUpdated);
 	},
 	getLatestPayments: function() {
-    if (this._state.latestPayments.length !== 0) {
-      return Q(this._state.latestPayments);
+    if (this._latestPayments.length !== 0) {
+      return this._latestPayments;
     }
 
     var that = this;
@@ -24,18 +22,15 @@ module.exports = Reflux.createStore({
 				return Api.getPayments(account.id);
 			}));
 		}).then(function(payments) {
-      var flattenPayments = _.flatten(payments);
-      that._state.latestPayments = flattenPayments;
-      deffered.resolve(flattenPayments);
-		}).catch(deffered.reject);
+      that._latestPayments = _.flatten(payments);
+      that.trigger();
+		});
 
-		return deffered.promise;
+		return [];
 	},
 	onAccountsUpdated: function() {
-		this._state.latestPayments = [];
-    var that = this;
-    this.getLatestPayments().then(function(payments) {
-      that.trigger(that._state);
-    });
+		this._latestPayments = [];
+    this.getLatestPayments();
+    this.trigger();
 	}
 });

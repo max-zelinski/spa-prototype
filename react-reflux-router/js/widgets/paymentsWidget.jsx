@@ -1,47 +1,39 @@
 var React = require('react'),
-		Reflux = require('reflux'),
-		ReactAsync = require('react-async');
+		Reflux = require('reflux');
 
 var Store = require('../stores/paymentsStore');
 
-var PaymentsWidget = React.createClass({
-	mixins: [
-    Reflux.listenTo(Store, 'onPaymentsUpdated'),
-    ReactAsync.Mixin
-  ],
-	getInitialStateAsync: function(state) {
-		Store.getLatestPayments().then(function(payments) {
-			state(null, {
-				payments: payments
-			});
-		});
+module.exports = React.createClass({
+	mixins: [Reflux.listenTo(Store, 'onPaymentsUpdated')],
+	getInitialState: function() {
+		return {
+			payments: Store.getLatestPayments()
+		};
 	},
 	onPaymentsUpdated: function(state) {
 		this.setState({
-			payments: state.latestPayments
+			payments: Store.getLatestPayments()
 		});
 	},
 	render: function() {
+		var payments;
+		if (this.state.payments.length === 0) {
+			payments = <div>Loading</div>;
+		}
+		else {
+			payments = this.state.payments.map(function(payment) {
+				return (<li key={payment.id}>{payment.name}</li>);
+			});
+		}
+
 		return (
 			<div>
 				<h2>Payments Widget</h2>
 				<p>Latest payments:</p>
 				<ul>
-					{this.state.payments.map(function(payment) {
-						return (<li key={payment.id}>{payment.name}</li>);
-					})}
+					{payments}
 				</ul>
 			</div>
 		);
 	}
-});
-
-module.exports = React.createClass({
-  render: function() {
-    return (
-      <ReactAsync.Preloaded preloader={<div>Loading</div>}>
-        <PaymentsWidget/>
-      </ReactAsync.Preloaded>
-    );
-  }
 });
