@@ -11,9 +11,7 @@ module.exports = React.createClass({
     };
   },
   onPaymentsUpdated: function(state) {
-    this.setState({
-      payments: Store.getLatestPayments()
-    });
+    this.setState(this.getInitialState());
   },
   render: function() {
     var payments;

@@ -16,7 +16,6 @@ module.exports = Reflux.createStore({
     }
 
     var that = this;
-    var deffered = Q.defer();
     AccountsStore.getAllAccounts().then(function(accounts) {
       return Q.all(accounts.map(function(account) {
         return Api.getPayments(account.id);
