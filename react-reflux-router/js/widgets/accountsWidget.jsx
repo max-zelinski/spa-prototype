@@ -6,7 +6,10 @@ var React = require('react'),
 var Store = require('../stores/accountsStore');
 
 var AccountsWidget = React.createClass({
-  mixins: [ReactAsync.Mixin],
+  mixins: [
+    Reflux.listenTo(Store, 'onAccountsUpdated'),
+    ReactAsync.Mixin
+  ],
   getInitialStateAsync: function(state) {
     Q.all([
       Store.getAllAccounts(),
