@@ -1,37 +1,63 @@
 var React = require('react'),
     Reflux = require('reflux'),
-    ReactAsync = require('react-async');
+    ReactAsync = require('react-async'),
+    Q = require('q');
 
-var Store = require('../stores/paymentsStore');
+var PaymentsStore = require('../stores/paymentsStore'),
+    AccountsStore = require('../stores/accountsStore');
 
 var PaymentsWidget = React.createClass({
   mixins: [
-    Reflux.listenTo(Store, 'onPaymentsUpdated'),
+    Reflux.listenTo(PaymentsStore, 'onStoreUpdated'),
+    Reflux.listenTo(AccountsStore, 'onStoreUpdated'),
     ReactAsync.Mixin
   ],
   getInitialStateAsync: function(state) {
-    Store.getLatestPayments().then(function(payments) {
+    Q.all([
+      AccountsStore.getCurrentAccount(),
+      PaymentsStore.getLatestPayments(),
+      PaymentsStore.getCurrentAccountPayments()
+    ]).spread(function(currentAccount, latestPayments, currentAccountPayments) {
       state(null, {
-        payments: payments
+        currentAccount: currentAccount,
+        latestPayments: latestPayments,
+        currentAccountPayments: currentAccountPayments
       });
+    }).catch(function(err) {
+      console.log(err);
     });
   },
-  onPaymentsUpdated: function(state) {
+  onStoreUpdated: function(state) {
     var that = this;
     this.getInitialStateAsync(function(_, state) {
       that.setState(state);
     });
   },
   render: function() {
+    var currentAccountPayments;
+    if (this.state.currentAccount !== null) {
+      currentAccountPayments = (
+        <div>
+          <p>Current account: {this.state.currentAccount.name}</p>
+          <ul>
+            {this.state.currentAccountPayments.map(function(payment) {
+              return (<li key={payment.id}>{payment.name}</li>);
+            })}
+          </ul>
+        </div>
+      );
+    }
+
     return (
       <div>
         <h2>Payments Widget</h2>
         <p>Latest payments:</p>
         <ul>
-          {this.state.payments.map(function(payment) {
+          {this.state.latestPayments.map(function(payment) {
             return (<li key={payment.id}>{payment.name}</li>);
           })}
         </ul>
+        {currentAccountPayments}
       </div>
     );
   }

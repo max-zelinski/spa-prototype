@@ -58,7 +58,7 @@ var AccountsWidget = React.createClass({
           })}
         </ul>
 
-        <p>Current account:</p>
+        <span>Current account:</span>
         <select onChange={this.changeCurrentAccount} value={currentAccountId}>
           <option value='empty'/>
           {this.state.accounts.map(function(account){
