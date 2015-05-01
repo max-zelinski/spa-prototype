@@ -37,7 +37,6 @@ module.exports = Reflux.createStore({
 		this.trigger();
   },
   onRefresh: function() {
-    this._currentAccount = null;
     this._accounts = null;
     this.trigger();
   }
