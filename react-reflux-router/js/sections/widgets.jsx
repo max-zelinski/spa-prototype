@@ -25,6 +25,10 @@ var Widgets = React.createClass({
       that.setState(state);
     });
   },
+  onRefreshClick: function(e) {
+    e.preventDefault();
+    this.forceUpdate();
+  },
   onAddWidgetClick: function(e) {
     e.preventDefault();
 
@@ -42,6 +46,8 @@ var Widgets = React.createClass({
     return (
       <div>
         <h1>Widgets</h1>
+        <a href='' onClick={this.onRefreshClick}>Refresh</a>
+        <br/>
         <a href='' onClick={this.onAddWidgetClick}>Add widget</a>
         {widgetsEl}
       </div>
