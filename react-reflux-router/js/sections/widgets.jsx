@@ -25,6 +25,15 @@ var Widgets = React.createClass({
     console.log('updated');
     this.setState({widgets: widgets});
   },
+  onAddWidgetClick: function(e) {
+    e.preventDefault();
+    
+    var widget = {
+      id: this.state.widgets.length,
+      type: 'simple-widget'
+    };
+    Actions.add(widget);
+  },
   render: function() {
     console.log('render');
     var widgets = this.state.widgets;
