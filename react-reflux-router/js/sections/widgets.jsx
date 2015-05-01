@@ -4,7 +4,8 @@ var Q = require('q'),
 
 var Store = require('../stores/widgetsStore'),
     Repository = require('../widgets/repository'),
-    Actions = require('../actions/widgetsActions');
+    Actions = require('../actions/widgetsActions'),
+    GlobalActions = require('../actions/globalActions');
 
 module.exports = React.createClass({
   mixins: [Reflux.listenTo(Store, 'onWidgetsUpdated')],
@@ -18,7 +19,7 @@ module.exports = React.createClass({
   },
   onRefreshClick: function(e) {
     e.preventDefault();
-    this.forceUpdate();
+    GlobalActions.refresh();
   },
   onAddWidgetClick: function(e) {
     e.preventDefault();

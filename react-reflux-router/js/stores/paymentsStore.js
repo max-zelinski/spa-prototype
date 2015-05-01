@@ -4,12 +4,14 @@ var Reflux = require('reflux'),
 
 var Api = require('../api/paymentsApi'),
     AccountsActions = require('../actions/accountsActions'),
-    AccountsStore = require('./accountsStore');
+    AccountsStore = require('./accountsStore'),
+    GlobalActions = require('../actions/globalActions');
 
 module.exports = Reflux.createStore({
   _payments: [],
   init: function() {
     this.listenTo(AccountsActions.add, this.onAccountsAdded);
+    this.listenTo(GlobalActions.refresh, this.onRefresh);
   },
   getLatestPayments: function() {
     var accounts = AccountsStore.getAllAccounts();
@@ -56,6 +58,10 @@ module.exports = Reflux.createStore({
     console.log('onAccountsAdded');
     this._latestPayments = [];
     this.getLatestPayments();
+    this.trigger();
+  },
+  onRefresh: function() {
+    this._payments = [];
     this.trigger();
   }
 });
