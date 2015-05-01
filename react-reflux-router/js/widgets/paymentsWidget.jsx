@@ -1,7 +1,8 @@
 var React = require('react'),
     Reflux = require('reflux');
 
-var Store = require('../stores/paymentsStore');
+var Store = require('../stores/paymentsStore'),
+    Actions = require('../actions/paymentsActions');
 
 module.exports = React.createClass({
   mixins: [Reflux.listenTo(Store, 'onPaymentsUpdated')],
