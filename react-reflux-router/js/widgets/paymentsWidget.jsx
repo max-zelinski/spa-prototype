@@ -16,11 +16,9 @@ var PaymentsWidget = React.createClass({
 			});
 		});
 	},
-	onPaymentsUpdated: function() {
-		Store.getLatestPayments().then(function(payments) {
-			this.setState({
-				payments: payments
-			});
+	onPaymentsUpdated: function(state) {
+		this.setState({
+			payments: state.latestPayments
 		});
 	},
 	render: function() {

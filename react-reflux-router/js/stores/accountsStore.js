@@ -11,6 +11,7 @@ module.exports = Reflux.createStore({
 	},
 	init: function() {
 		this.listenTo(Actions.selectCurrentAccount, this.onSelectCurrentAccount);
+    this.listenTo(Actions.add, this.onAdd);
 	},
 	getCurrentAccount: function() {
 		return this._state.currentAccount;
@@ -24,12 +25,14 @@ module.exports = Reflux.createStore({
     return Api.getAllAccounts().then(function(accounts) {
       that._state.accounts = accounts;
       return accounts;
-    }).catch(function(err) {
-      console.log(err);
     });
   },
 	onSelectCurrentAccount: function(newCurrentAccount) {
 		this._state.currentAccount = newCurrentAccount;
 		this.trigger(this._state);
-	}
+	},
+  onAdd: function(account) {
+    this._state.accounts.push(account);
+		this.trigger(this._state);
+  }
 });
