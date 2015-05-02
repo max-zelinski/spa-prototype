@@ -20,10 +20,12 @@ System.config({
     "core-js": "npm:core-js@0.8.4",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
     "lodash": "npm:lodash@3.7.0",
+    "max-zelinski/react-transmit": "github:max-zelinski/react-transmit@2.5.3",
     "q": "npm:q@2.0.3",
     "react": "npm:react@0.13.2",
     "react-async": "npm:react-async@2.1.0",
     "react-router": "npm:react-router@0.13.2",
+    "react-transmit": "npm:react-transmit@2.5.4",
     "reflux": "npm:reflux@0.2.7",
     "github:floatdrop/plugin-jsx@1.1.0": {
       "react-tools": "npm:react-tools@0.13.2"
@@ -396,6 +398,10 @@ System.config({
       "commoner": "npm:commoner@0.10.1",
       "jstransform": "npm:jstransform@10.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:react-transmit@2.5.4": {
+      "ascii-json": "npm:ascii-json@0.2.0",
+      "react": "npm:react@0.13.2"
     },
     "npm:react@0.13.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",

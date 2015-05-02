@@ -24,7 +24,10 @@ module.exports = Reflux.createStore({
   },
 	onWidgetAdd: function(widget) {
 		this._widgets.push(widget);
-		this.trigger();
+    var that = this;
+    Api.addWidget(widget).then(function() {
+      that.trigger();
+    });
 	},
   onRefresh: function() {
     this._widgets = [];

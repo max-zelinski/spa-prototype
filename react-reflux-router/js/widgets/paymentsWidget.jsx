@@ -1,6 +1,6 @@
 var React = require('react'),
     Reflux = require('reflux'),
-    ReactAsync = require('react-async'),
+    Transmit = require('react-transmit'),
     Q = require('q');
 
 var PaymentsStore = require('../stores/paymentsStore'),
@@ -9,36 +9,19 @@ var PaymentsStore = require('../stores/paymentsStore'),
 var PaymentsWidget = React.createClass({
   mixins: [
     Reflux.listenTo(PaymentsStore, 'onStoreUpdated'),
-    Reflux.listenTo(AccountsStore, 'onStoreUpdated'),
-    ReactAsync.Mixin
+    Reflux.listenTo(AccountsStore, 'onStoreUpdated')
   ],
-  getInitialStateAsync: function(state) {
-    Q.all([
-      AccountsStore.getCurrentAccount(),
-      PaymentsStore.getLatestPayments(),
-      PaymentsStore.getCurrentAccountPayments()
-    ]).spread(function(currentAccount, latestPayments, currentAccountPayments) {
-      state(null, {
-        currentAccount: currentAccount,
-        latestPayments: latestPayments,
-        currentAccountPayments: currentAccountPayments
-      });
-    });
-  },
-  onStoreUpdated: function(state) {
-    var that = this;
-    this.getInitialStateAsync(function(_, state) {
-      that.setState(state);
-    });
+  onStoreUpdated: function() {
+    this.props.setQueryParams();
   },
   render: function() {
     var currentAccountPayments;
-    if (this.state.currentAccount !== null) {
+    if (this.props.currentAccount !== null) {
       currentAccountPayments = (
         <div>
-          <p>Current account: {this.state.currentAccount.name}</p>
+          <p>Current account: {this.props.currentAccount.name}</p>
           <ul>
-            {this.state.currentAccountPayments.map(function(payment) {
+            {this.props.currentAccountPayments.map(function(payment) {
               return (<li key={payment.id}>{payment.name}</li>);
             })}
           </ul>
@@ -51,7 +34,7 @@ var PaymentsWidget = React.createClass({
         <h2>Payments Widget</h2>
         <p>Latest payments:</p>
         <ul>
-          {this.state.latestPayments.map(function(payment) {
+          {this.props.latestPayments.map(function(payment) {
             return (<li key={payment.id}>{payment.name}</li>);
           })}
         </ul>
@@ -61,12 +44,16 @@ var PaymentsWidget = React.createClass({
   }
 });
 
-module.exports = React.createClass({
-  render: function() {
-    return (
-      <ReactAsync.Preloaded preloader={<div>Loading</div>}>
-        <PaymentsWidget/>
-      </ReactAsync.Preloaded>
-    );
+module.exports = Transmit.createContainer(PaymentsWidget, {
+  queries: {
+    currentAccount: function() {
+      return AccountsStore.getCurrentAccount();
+    },
+    latestPayments: function() {
+      return PaymentsStore.getLatestPayments();
+    },
+    currentAccountPayments: function() {
+      return PaymentsStore.getCurrentAccountPayments();
+    }
   }
 });

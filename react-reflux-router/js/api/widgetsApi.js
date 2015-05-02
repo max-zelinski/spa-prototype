@@ -1,13 +1,15 @@
 var Q = require('q');
 
 module.exports = {
+  _widgets: [
+      { id: 0, type: 'payments-widget', settings: {} },
+      { id: 1, type: 'accounts-widget', settings: {} }
+  ],
   getWidgets: function() {
-    return Q([
-        { id: 0, type: 'payments-widget', settings: {} },
-        { id: 1, type: 'accounts-widget', settings: {} }
-      ]).delay(0);
+    return Q(this._widgets).delay(500);
   },
   addWidget: function(widget) {
-    console.log('adding widget');
+    this._widgets.push();
+    return Q(true);
   }
 };

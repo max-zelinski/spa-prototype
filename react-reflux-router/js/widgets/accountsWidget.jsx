@@ -1,32 +1,15 @@
 var React = require('react'),
     Reflux = require('reflux'),
-    ReactAsync = require('react-async'),
+    Transmit = require('react-transmit'),
     Q = require('q');
 
 var Store = require('../stores/accountsStore'),
     Actions = require('../actions/accountsActions');
 
 var AccountsWidget = React.createClass({
-  mixins: [
-    Reflux.listenTo(Store, 'onAccountsUpdated'),
-    ReactAsync.Mixin
-  ],
-  getInitialStateAsync: function(state) {
-    Q.all([
-      Store.getAllAccounts(),
-      Store.getCurrentAccount()
-    ]).spread(function(accounts, currentAccount) {
-      state(null, {
-        accounts: accounts,
-        currentAccount: currentAccount
-      });
-    });
-  },
+  mixins: [Reflux.listenTo(Store, 'onAccountsUpdated')],
   onAccountsUpdated: function() {
-		var that = this;
-    this.getInitialStateAsync(function(_, state) {
-      that.setState(state);
-    });
+    this.props.setQueryParams();
 	},
   changeCurrentAccount: function(e) {
     e.preventDefault();
@@ -36,7 +19,7 @@ var AccountsWidget = React.createClass({
       return;
     }
 
-    this.state.accounts.some(function(account) {
+    this.props.accounts.some(function(account) {
       if (account.id == accountId) {
         Actions.changeCurrentAccount(account);
         return true;
@@ -45,7 +28,7 @@ var AccountsWidget = React.createClass({
     });
   },
   render: function() {
-    var currentAccount = this.state.currentAccount;
+    var currentAccount = this.props.currentAccount;
     var currentAccountId = currentAccount !== null ? currentAccount.id : 'empty';
     return (
       <div>
@@ -53,7 +36,7 @@ var AccountsWidget = React.createClass({
 
         <p>Accounts:</p>
         <ul>
-          {this.state.accounts.map(function(account) {
+          {this.props.accounts.map(function(account) {
             return <li key={account.id}>{account.name}</li>;
           })}
         </ul>
@@ -61,7 +44,7 @@ var AccountsWidget = React.createClass({
         <span>Current account:</span>
         <select onChange={this.changeCurrentAccount} value={currentAccountId}>
           <option value='empty'/>
-          {this.state.accounts.map(function(account){
+          {this.props.accounts.map(function(account){
             return <option key={account.id} value={account.id}>{account.name}</option>;
           })}
         </select>
@@ -70,12 +53,13 @@ var AccountsWidget = React.createClass({
   }
 });
 
-module.exports = React.createClass({
-  render: function() {
-    return (
-      <ReactAsync.Preloaded preloader={<div>Loading</div>}>
-        <AccountsWidget/>
-      </ReactAsync.Preloaded>
-    );
+module.exports = Transmit.createContainer(AccountsWidget, {
+  queries: {
+    accounts: function() {
+      return Store.getAllAccounts();
+    },
+    currentAccount: function() {
+      return Store.getCurrentAccount();
+    }
   }
 });
