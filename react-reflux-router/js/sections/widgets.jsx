@@ -5,7 +5,8 @@ var Q = require('q'),
 
 var Store = require('../stores/widgetsStore'),
     Repository = require('../widgets/repository'),
-    Actions = require('../actions/widgetsActions');
+    Actions = require('../actions/widgetsActions'),
+    GlobalActions = require('../actions/globalActions');
 
 var Widgets = React.createClass({
   mixins: [
@@ -15,7 +16,8 @@ var Widgets = React.createClass({
   getInitialStateAsync: function(state) {
     Store.getWidgets().then(function(widgets) {
       state(null, {
-        widgets: widgets
+        widgets: widgets,
+        refresh: false
       });
     });
   },
@@ -27,7 +29,13 @@ var Widgets = React.createClass({
   },
   onRefreshClick: function(e) {
     e.preventDefault();
-    this.forceUpdate();
+
+    GlobalActions.refresh();
+
+    // hack to trigger recreation of widgets
+    this.setState({refresh: true}, function() {
+      this.setState({refresh: false});
+    });
   },
   onAddWidgetClick: function(e) {
     e.preventDefault();
@@ -39,6 +47,11 @@ var Widgets = React.createClass({
     Actions.add(widget);
   },
   render: function() {
+    // hack to trigger recreation of widgets
+    if (this.state.refresh) {
+      return <div></div>;
+    }
+
     var widgets = this.state.widgets;
     var widgetsEl = widgets.map(function(widget) {
       return React.createElement(Repository.getWidget(widget.type), {key: widget.id});

@@ -2,12 +2,14 @@ var Reflux = require('reflux'),
     Q = require('q');
 
 var Api = require('../api/widgetsApi'),
-		Actions = require('../actions/widgetsActions');
+		Actions = require('../actions/widgetsActions'),
+    GlobalActions = require('../actions/globalActions');
 
 module.exports = Reflux.createStore({
   _widgets: [],
 	init: function() {
 		this.listenTo(Actions.add, this.onWidgetAdd);
+    this.listenTo(GlobalActions.refresh, this.onRefresh);
 	},
   getWidgets: function() {
     if (this._widgets.length !== 0) {
@@ -23,5 +25,9 @@ module.exports = Reflux.createStore({
 	onWidgetAdd: function(widget) {
 		this._widgets.push(widget);
 		this.trigger();
-	}
+	},
+  onRefresh: function() {
+    this._widgets = [];
+    this.trigger();
+  }
 });

@@ -23,8 +23,6 @@ var PaymentsWidget = React.createClass({
         latestPayments: latestPayments,
         currentAccountPayments: currentAccountPayments
       });
-    }).catch(function(err) {
-      console.log(err);
     });
   },
   onStoreUpdated: function(state) {
