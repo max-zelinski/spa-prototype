@@ -17,27 +17,17 @@ var Widgets = React.createClass({
     e.preventDefault();
 
     GlobalActions.refresh();
-    //
-    // // hack to trigger recreation of widgets
-    // this.setState({refresh: true}, function() {
-    //   this.setState({refresh: false});
-    // });
   },
   onAddWidgetClick: function(e) {
     e.preventDefault();
 
     var widget = {
       id: this.props.widgets.length,
-      type: 'simple-widget'
+      type: 'accounts-widget'
     };
     Actions.add(widget);
   },
   render: function() {
-    // // hack to trigger recreation of widgets
-    // if (this.state.refresh) {
-    //   return <div></div>;
-    // }
-
     var widgets = this.props.widgets;
     var widgetsEl = widgets.map(function(widget) {
       return React.createElement(Repository.getWidget(widget.type), {key: widget.id, emptyView: <h4>Loading...</h4>});
