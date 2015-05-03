@@ -4,6 +4,7 @@
     "dependencies": {
       "jsx": "github:floatdrop/plugin-jsx@^1.1.0",
       "lodash": "npm:lodash@^3.7.0",
+      "memoize": "github:addyosmani/memoize.js@^0.1.1",
       "q": "npm:q@^2.0.3",
       "react": "npm:react@^0.13.2",
       "react-router": "npm:react-router@^0.13.2",

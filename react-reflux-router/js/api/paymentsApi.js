@@ -1,4 +1,5 @@
-var Q = require('q');
+var Q = require('q'),
+    Utils = require('../utils/utils');
 
 module.exports = {
 	_payments: [
@@ -9,11 +10,11 @@ module.exports = {
 		{id: 4, accountId: 1, name: 'payment 5'},
 		{id: 5, accountId: 2, name: 'payment 6 new'}
 	],
-  getPayments: function(accountId) {
+  getPayments: Utils.throttlePromise(function(accountId) {
 		var payments = this._payments.filter(function(payment) {
 			return payment.accountId === accountId;
 		});
 
     return Q(payments).delay(500);
-  }
+  })
 };

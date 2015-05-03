@@ -21,6 +21,7 @@ System.config({
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
     "lodash": "npm:lodash@3.7.0",
     "max-zelinski/react-transmit": "github:max-zelinski/react-transmit@2.5.3",
+    "memoize": "github:addyosmani/memoize.js@0.1.1",
     "q": "npm:q@2.0.3",
     "react": "npm:react@0.13.2",
     "react-async": "npm:react-async@2.1.0",
