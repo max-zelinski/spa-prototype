@@ -9,6 +9,7 @@ module.exports = Reflux.createStore({
   _widgets: [],
 	init: function() {
 		this.listenTo(Actions.add, this.onWidgetAdd);
+    this.listenTo(Actions.changeSettings, this.onChangeSettings);
     this.listenTo(GlobalActions.refresh, this.onRefresh);
 	},
   getWidgets: function() {
@@ -29,8 +30,18 @@ module.exports = Reflux.createStore({
       that.trigger();
     });
 	},
+  onChangeSettings: function(update) {
+    this._widgets.forEach(function(widget){
+      if (widget.id === update.id) {
+        widget.settings = update.settings;
+        console.log(widget.settings);
+        return false;
+      }
+    });
+    this.trigger();
+  },
   onRefresh: function() {
     this._widgets = [];
-    this.trigger();
+    this.trigger(true);
   }
 });

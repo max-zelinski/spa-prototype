@@ -11,8 +11,8 @@ var PaymentsWidget = React.createClass({
     Reflux.listenTo(PaymentsStore, 'onStoreUpdated'),
     Reflux.listenTo(AccountsStore, 'onStoreUpdated')
   ],
-  onStoreUpdated: function() {
-    this.props.setQueryParams();
+  onStoreUpdated: function(refresh) {
+    this.props.refreshQuery(refresh);
   },
   render: function() {
     var currentAccountPayments;

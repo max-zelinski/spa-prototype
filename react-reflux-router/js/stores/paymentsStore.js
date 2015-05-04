@@ -20,9 +20,7 @@ module.exports = Reflux.createStore({
         return that.getPayments(account.id);
       }));
     }).then(function(payments) {
-      var flattenPayments = _.flatten(payments);
-      that._latestPayments = flattenPayments;
-      return flattenPayments;
+      return _.flatten(payments);
     });
   },
   getCurrentAccountPayments: function() {
@@ -38,7 +36,6 @@ module.exports = Reflux.createStore({
     if (this._payments[accountId] !== undefined) {
       return this._payments[accountId];
     }
-
     var that = this;
     return Api.getPayments(accountId).then(function(payments) {
       that._payments[accountId] = payments;
@@ -46,13 +43,10 @@ module.exports = Reflux.createStore({
     });
   },
   onAccountsAdded: function(account) {
-    this._latestPayments = [];
-    this.getPayments(account.id).then(function() {
-      this.trigger();
-    });
+    this.trigger(true);
   },
   onRefresh: function() {
     this._payments = [];
-    this.trigger();
+    this.trigger(true);
   }
 });

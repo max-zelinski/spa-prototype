@@ -25,6 +25,7 @@ System.config({
     "q": "npm:q@2.0.3",
     "react": "npm:react@0.13.2",
     "react-async": "npm:react-async@2.1.0",
+    "react-lensed-state": "npm:react-lensed-state@0.1.2",
     "react-router": "npm:react-router@0.13.2",
     "react-transmit": "npm:react-transmit@2.5.4",
     "reflux": "npm:reflux@0.2.7",
@@ -175,6 +176,17 @@ System.config({
     "npm:core-util-is@1.0.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
     },
+    "npm:core.lambda@1.0.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
+    "npm:core.operators@1.0.0": {
+      "core.lambda": "npm:core.lambda@1.0.0",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
     "npm:create-ecdh@2.0.0": {
       "bn.js": "npm:bn.js@1.3.0",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -208,6 +220,16 @@ System.config({
       "pbkdf2": "npm:pbkdf2@3.0.4",
       "public-encrypt": "npm:public-encrypt@2.0.0",
       "randombytes": "npm:randombytes@2.0.1"
+    },
+    "npm:data.lens@0.0.3": {
+      "core.lambda": "npm:core.lambda@1.0.0",
+      "core.operators": "npm:core.operators@1.0.0",
+      "data.maybe": "npm:data.maybe@1.1.0"
+    },
+    "npm:data.maybe@1.1.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
     "npm:diffie-hellman@3.0.1": {
       "bn.js": "npm:bn.js@1.3.0",
@@ -385,6 +407,10 @@ System.config({
     },
     "npm:react-async@2.1.0": {
       "ascii-json": "npm:ascii-json@0.2.0",
+      "react": "npm:react@0.13.2"
+    },
+    "npm:react-lensed-state@0.1.2": {
+      "data.lens": "npm:data.lens@0.0.3",
       "react": "npm:react@0.13.2"
     },
     "npm:react-router@0.13.2": {

@@ -8,8 +8,8 @@ var Store = require('../stores/accountsStore'),
 
 var AccountsWidget = React.createClass({
   mixins: [Reflux.listenTo(Store, 'onAccountsUpdated')],
-  onAccountsUpdated: function() {
-    this.props.setQueryParams();
+  onAccountsUpdated: function(refresh) {
+    this.props.refreshQuery(refresh);
 	},
   changeCurrentAccount: function(e) {
     e.preventDefault();
@@ -27,12 +27,23 @@ var AccountsWidget = React.createClass({
       return false;
     });
   },
+  addAccount: function(e) {
+    e.preventDefault();
+
+    var accountsLength = this.props.accounts.length;
+    var account = {
+      id: accountsLength,
+      name: 'account ' + (accountsLength + 1)
+    };
+    Actions.add(account);
+  },
   render: function() {
     var currentAccount = this.props.currentAccount;
     var currentAccountId = currentAccount !== null ? currentAccount.id : 'empty';
     return (
       <div>
         <h2>Accounts Widget</h2>
+        <a href='' onClick={this.addAccount}>Add account</a>
 
         <p>Accounts:</p>
         <ul>

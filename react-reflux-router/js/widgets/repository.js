@@ -1,5 +1,5 @@
 var SimpleWidget = require('./simple-widget.jsx!'),
-    ComplexWidget = require('./complex-widget.jsx!'),
+    ComplexWidget = require('./complexWidget/widget.jsx!'),
     PaymentsWidget = require('./paymentsWidget.jsx!'),
     AccountsWidget = require('./accountsWidget.jsx!');
 

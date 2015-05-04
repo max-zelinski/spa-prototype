@@ -10,8 +10,8 @@ var Store = require('../stores/widgetsStore'),
 
 var Widgets = React.createClass({
   mixins: [Reflux.listenTo(Store, 'onWidgetsUpdated')],
-  onWidgetsUpdated: function() {
-    this.props.setQueryParams();
+  onWidgetsUpdated: function(refresh) {
+    this.props.refreshQuery(refresh);
   },
   onRefreshClick: function(e) {
     e.preventDefault();
@@ -30,7 +30,11 @@ var Widgets = React.createClass({
   render: function() {
     var widgets = this.props.widgets;
     var widgetsEl = widgets.map(function(widget) {
-      return React.createElement(Repository.getWidget(widget.type), {key: widget.id, emptyView: <h4>Loading...</h4>});
+      return React.createElement(Repository.getWidget(widget.type), {
+        key: widget.id,
+        emptyView: <h4>Loading...</h4>,
+        widget: widget
+      });
     });
     return (
       <div>
