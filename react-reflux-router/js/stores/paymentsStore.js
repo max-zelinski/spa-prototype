@@ -34,7 +34,7 @@ module.exports = Reflux.createStore({
   },
   getPayments: function(accountId) {
     if (this._payments[accountId] !== undefined) {
-      return this._payments[accountId];
+      return Q(this._payments[accountId]);
     }
     var that = this;
     return Api.getPayments(accountId).then(function(payments) {
