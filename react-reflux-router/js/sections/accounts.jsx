@@ -1,32 +1,19 @@
 var React = require('react'),
 		Reflux = require('reflux'),
-		ReactAsync = require('react-async');
+		Transmit = require('react-transmit');
 
 var Store = require('../stores/accountsStore'),
     Actions = require('../actions/accountsActions');
 
 var Accounts = React.createClass({
-  mixins: [
-    Reflux.listenTo(Store, 'onAccountsUpdated'),
-    ReactAsync.Mixin
-  ],
-  getInitialStateAsync: function(state) {
-		Store.getAllAccounts().then(function(accounts) {
-			state(null, {
-				accounts: accounts
-			});
-		});
-	},
-  onAccountsUpdated: function() {
-		var that = this;
-    this.getInitialStateAsync(function(_, state) {
-      that.setState(state);
-    });
+  mixins: [Reflux.listenTo(Store, 'onAccountsUpdated')],
+  onAccountsUpdated: function(refresh) {
+		this.props.refreshQuery(refresh);
 	},
   addAccount: function(e) {
     e.preventDefault();
 
-    var accountsLength = this.state.accounts.length;
+    var accountsLength = this.props.accounts.length;
     var account = {
       id: accountsLength,
       name: 'account ' + (accountsLength + 1)
@@ -40,7 +27,7 @@ var Accounts = React.createClass({
         <a href='' onClick={this.addAccount}>Add account</a>
         <p>Accounts:</p>
         <ul>
-          {this.state.accounts.map(function(account) {
+          {this.props.accounts.map(function(account) {
             return <li key={account.id}>{account.name}</li>;
           })}
         </ul>
@@ -49,12 +36,10 @@ var Accounts = React.createClass({
   }
 });
 
-module.exports = React.createClass({
-  render: function() {
-    return (
-      <ReactAsync.Preloaded preloader={<div>Loading</div>}>
-        <Accounts/>
-      </ReactAsync.Preloaded>
-    );
+module.exports = Transmit.createContainer(Accounts, {
+  queries: {
+		accounts: function() {
+      return Store.getAllAccounts();
+    }
   }
 });
