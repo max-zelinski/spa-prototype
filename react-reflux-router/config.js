@@ -15,19 +15,18 @@ System.config({
 
 System.config({
   "map": {
-    "babel": "npm:babel-core@5.1.13",
-    "babel-runtime": "npm:babel-runtime@5.1.13",
+    "ascii-json": "npm:ascii-json@0.2.0",
+    "babel": "npm:babel-core@5.2.9",
+    "babel-runtime": "npm:babel-runtime@5.2.9",
     "core-js": "npm:core-js@0.8.4",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
-    "lodash": "npm:lodash@3.7.0",
-    "max-zelinski/react-transmit": "github:max-zelinski/react-transmit@2.5.3",
+    "lodash": "npm:lodash@3.8.0",
     "memoize": "github:addyosmani/memoize.js@0.1.1",
     "q": "npm:q@2.0.3",
     "react": "npm:react@0.13.2",
-    "react-async": "npm:react-async@2.1.0",
     "react-lensed-state": "npm:react-lensed-state@0.1.2",
-    "react-router": "npm:react-router@0.13.2",
-    "react-transmit": "npm:react-transmit@2.5.4",
+    "react-router": "npm:react-router@0.13.3",
+    "react-transmit": "github:max-zelinski/react-transmit@2.5.5",
     "reflux": "npm:reflux@0.2.7",
     "github:floatdrop/plugin-jsx@1.1.0": {
       "react-tools": "npm:react-tools@0.13.2"
@@ -137,9 +136,6 @@ System.config({
       "base64-js": "npm:base64-js@0.0.8",
       "ieee754": "npm:ieee754@1.1.4",
       "is-array": "npm:is-array@1.0.1"
-    },
-    "npm:classnames@1.1.4": {
-      "assert": "github:jspm/nodelibs-assert@0.1.0"
     },
     "npm:commander@2.5.1": {
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
@@ -322,7 +318,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.1",
       "source-map": "npm:source-map@0.1.31"
     },
-    "npm:lodash@3.7.0": {
+    "npm:lodash@3.8.0": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:miller-rabin@1.1.5": {
@@ -405,16 +401,11 @@ System.config({
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:react-async@2.1.0": {
-      "ascii-json": "npm:ascii-json@0.2.0",
-      "react": "npm:react@0.13.2"
-    },
     "npm:react-lensed-state@0.1.2": {
       "data.lens": "npm:data.lens@0.0.3",
       "react": "npm:react@0.13.2"
     },
-    "npm:react-router@0.13.2": {
-      "classnames": "npm:classnames@1.1.4",
+    "npm:react-router@0.13.3": {
       "object-assign": "npm:object-assign@2.0.0",
       "process": "github:jspm/nodelibs-process@0.1.1",
       "qs": "npm:qs@2.4.1",
@@ -425,10 +416,6 @@ System.config({
       "commoner": "npm:commoner@0.10.1",
       "jstransform": "npm:jstransform@10.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
-    },
-    "npm:react-transmit@2.5.4": {
-      "ascii-json": "npm:ascii-json@0.2.0",
-      "react": "npm:react@0.13.2"
     },
     "npm:react@0.13.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
