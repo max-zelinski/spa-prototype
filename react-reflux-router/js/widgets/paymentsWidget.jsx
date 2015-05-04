@@ -22,7 +22,7 @@ var PaymentsWidget = React.createClass({
           <p>Current account: {this.props.currentAccount.name}</p>
           <ul>
             {this.props.currentAccountPayments.map(function(payment) {
-              return (<li key={payment.id}>{payment.name}</li>);
+              return (<li key={payment.id}>{payment.description}</li>);
             })}
           </ul>
         </div>
@@ -35,7 +35,7 @@ var PaymentsWidget = React.createClass({
         <p>Latest payments:</p>
         <ul>
           {this.props.latestPayments.map(function(payment) {
-            return (<li key={payment.id}>{payment.name}</li>);
+            return (<li key={payment.id}>{payment.description}</li>);
           })}
         </ul>
         {currentAccountPayments}

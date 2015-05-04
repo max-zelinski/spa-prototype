@@ -3,12 +3,12 @@ var Q = require('q'),
 
 module.exports = {
 	_payments: [
-		{id: 0, accountId: 0, name: 'payment 1'},
-		{id: 1, accountId: 0, name: 'payment 2'},
-		{id: 2, accountId: 0, name: 'payment 3'},
-		{id: 3, accountId: 1, name: 'payment 4'},
-		{id: 4, accountId: 1, name: 'payment 5'},
-		{id: 5, accountId: 2, name: 'payment 6 new'}
+		{id: 0, accountId: 0, description: 'payment 1', amount: 0.11},
+		{id: 1, accountId: 0, description: 'payment 2', amount: 4.3},
+		{id: 2, accountId: 0, description: 'payment 3', amount: 2.67},
+		{id: 3, accountId: 1, description: 'payment 4', amount: 76.26},
+		{id: 4, accountId: 1, description: 'payment 5', amount: 54.0},
+		{id: 5, accountId: 2, description: 'payment 6', amount: 12.6}
 	],
   getPayments: Utils.throttlePromise(function(accountId) {
 		var payments = this._payments.filter(function(payment) {
