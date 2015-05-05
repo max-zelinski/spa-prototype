@@ -23,15 +23,6 @@ module.exports = Reflux.createStore({
       return _.flatten(payments);
     });
   },
-  getCurrentAccountPayments: function() {
-    var that = this;
-    return AccountsStore.getCurrentAccount().then(function(currentAccount) {
-      if (currentAccount === null) {
-        return [];
-      }
-      return that.getPayments(currentAccount.id);
-    });
-  },
   getPayments: function(accountId) {
     if (this._payments[accountId] !== undefined) {
       return Q(this._payments[accountId]);

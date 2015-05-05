@@ -19,7 +19,7 @@ var PaymentsWidget = React.createClass({
     if (this.props.currentAccount !== null) {
       currentAccountPayments = (
         <div>
-          <p>Current account: {this.props.currentAccount.name}</p>
+          <p>{this.props.currentAccount.name} payments:</p>
           <ul>
             {this.props.currentAccountPayments.map(function(payment) {
               return (<li key={payment.id}>{payment.description}</li>);
@@ -45,15 +45,26 @@ var PaymentsWidget = React.createClass({
 });
 
 module.exports = Transmit.createContainer(PaymentsWidget, {
+  // queryParams: {
+  //   currentAccount: function() {
+  //     return AccountsStore.getCurrentAccount();
+  //   }
+  // },
   queries: {
     currentAccount: function() {
-      return AccountsStore.getCurrentAccount();
+      return Q(AccountsStore.getCurrentAccount());
     },
     latestPayments: function() {
       return PaymentsStore.getLatestPayments();
     },
-    currentAccountPayments: function() {
-      return PaymentsStore.getCurrentAccountPayments();
+    currentAccountPayments: function(queryParams) {
+      if (queryParams.currentAccount) {
+        return PaymentsStore.getPayments(queryParams.currentAccount.id);
+      }
+      else if (AccountsStore.getCurrentAccount()) {
+        return PaymentsStore.getPayments(AccountsStore.getCurrentAccount().id);
+      }
+      return Q([]);
     }
   }
 });

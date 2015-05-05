@@ -70,7 +70,7 @@ module.exports = Transmit.createContainer(AccountsWidget, {
       return Store.getAllAccounts();
     },
     currentAccount: function() {
-      return Store.getCurrentAccount();
+      return Q(Store.getCurrentAccount());
     }
   }
 });
