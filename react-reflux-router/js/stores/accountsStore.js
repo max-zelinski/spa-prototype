@@ -14,7 +14,7 @@ module.exports = Reflux.createStore({
     this.listenTo(GlobalActions.refresh, this.onRefresh);
 	},
 	getCurrentAccount: function() {
-		return Q(this._currentAccount);
+		return this._currentAccount;
 	},
   getAllAccounts: function() {
     if (this._accounts.length !== 0) {
