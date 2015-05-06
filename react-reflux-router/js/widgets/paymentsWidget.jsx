@@ -1,18 +1,19 @@
 var React = require('react'),
     Reflux = require('reflux'),
-    Transmit = require('react-transmit'),
     Q = require('q');
 
 var PaymentsStore = require('../stores/paymentsStore'),
     AccountsStore = require('../stores/accountsStore');
+
+var Query = require('../components/queryContainer.jsx!');
 
 var PaymentsWidget = React.createClass({
   mixins: [
     Reflux.listenTo(PaymentsStore, 'onStoreUpdated'),
     Reflux.listenTo(AccountsStore, 'onStoreUpdated')
   ],
-  onStoreUpdated: function(refresh) {
-    this.props.refreshQuery(refresh);
+  onStoreUpdated: function() {
+    this.props.setQueryParams();
   },
   render: function() {
     var currentAccountPayments;
@@ -31,7 +32,7 @@ var PaymentsWidget = React.createClass({
 
     return (
       <div>
-        <h2>Payments Widget</h2>
+        <h2>Payments Widget {this.props.isLoading ? ' loading...' : ''}</h2>
         <p>Latest payments:</p>
         <ul>
           {this.props.latestPayments.map(function(payment) {
@@ -44,7 +45,9 @@ var PaymentsWidget = React.createClass({
   }
 });
 
-module.exports = Transmit.createContainer(PaymentsWidget, {
+var EmptyView = <h4>Loading</h4>;
+
+module.exports = Query.createContainer(PaymentsWidget, EmptyView, {
   // queryParams: {
   //   currentAccount: function() {
   //     return AccountsStore.getCurrentAccount();

@@ -1,17 +1,18 @@
 var Q = require('q'),
     React = require('react'),
-    Reflux = require('reflux'),
-    Transmit = require('react-transmit');
+    Reflux = require('reflux');
+
+var Query = require('../components/queryContainer.jsx!');
 
 var Store = require('../stores/widgetsStore'),
-    Repository = require('../widgets/repository'),
+    Repository = require('../widgets/repository.jsx!'),
     Actions = require('../actions/widgetsActions'),
     GlobalActions = require('../actions/globalActions');
 
 var Widgets = React.createClass({
   mixins: [Reflux.listenTo(Store, 'onWidgetsUpdated')],
-  onWidgetsUpdated: function(refresh) {
-    this.props.refreshQuery(refresh);
+  onWidgetsUpdated: function() {
+    this.props.setQueryParams();
   },
   onRefreshClick: function(e) {
     e.preventDefault();
@@ -31,9 +32,8 @@ var Widgets = React.createClass({
     var widgets = this.props.widgets;
     var widgetsEl = widgets.map(function(widget) {
       return React.createElement(Repository.getWidget(widget.type), {
+        widget: widget,
         key: widget.id,
-        emptyView: <h4>Loading...</h4>,
-        widget: widget
       });
     });
     return (
@@ -48,7 +48,9 @@ var Widgets = React.createClass({
   }
 });
 
-module.exports = Transmit.createContainer(Widgets, {
+var EmptyView = <h4>Loading</h4>;
+
+module.exports = Query.createContainer(Widgets, EmptyView, {
   queries: {
     widgets: function() {
       return Store.getWidgets();

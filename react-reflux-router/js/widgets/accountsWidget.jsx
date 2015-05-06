@@ -1,15 +1,16 @@
 var React = require('react'),
     Reflux = require('reflux'),
-    Transmit = require('react-transmit'),
     Q = require('q');
+
+var Query = require('../components/queryContainer.jsx!');
 
 var Store = require('../stores/accountsStore'),
     Actions = require('../actions/accountsActions');
 
 var AccountsWidget = React.createClass({
   mixins: [Reflux.listenTo(Store, 'onAccountsUpdated')],
-  onAccountsUpdated: function(refresh) {
-    this.props.refreshQuery(refresh);
+  onAccountsUpdated: function() {
+    this.props.setQueryParams();
 	},
   changeCurrentAccount: function(e) {
     e.preventDefault();
@@ -42,7 +43,7 @@ var AccountsWidget = React.createClass({
     var currentAccountId = currentAccount !== null ? currentAccount.id : 'empty';
     return (
       <div>
-        <h2>Accounts Widget</h2>
+        <h2>Accounts Widget {this.props.isLoading ? ' loading...' : ''}</h2>
         <a href='' onClick={this.addAccount}>Add account</a>
 
         <p>Accounts:</p>
@@ -64,7 +65,9 @@ var AccountsWidget = React.createClass({
   }
 });
 
-module.exports = Transmit.createContainer(AccountsWidget, {
+var EmptyView = <h4>Loading</h4>;
+
+module.exports = Query.createContainer(AccountsWidget, EmptyView, {
   queries: {
     accounts: function() {
       return Store.getAllAccounts();
