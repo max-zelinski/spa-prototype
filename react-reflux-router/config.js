@@ -27,7 +27,7 @@ System.config({
     "react-lensed-state": "npm:react-lensed-state@0.1.2",
     "react-resolver": "npm:react-resolver@1.1.7",
     "react-router": "npm:react-router@0.13.3",
-    "react-transmit": "npm:react-transmit@2.5.4",
+    "react-transmit": "github:max-zelinski/react-transmit@2.6.2",
     "reflux": "npm:reflux@0.2.7",
     "github:floatdrop/plugin-jsx@1.1.0": {
       "react-tools": "npm:react-tools@0.13.2"

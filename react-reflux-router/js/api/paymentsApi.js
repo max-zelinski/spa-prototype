@@ -12,7 +12,7 @@ module.exports = {
 	],
   getPayments: Utils.throttlePromise(function(accountId) {
 		var payments = this._payments.filter(function(payment) {
-			return payment.accountId === accountId;
+			return payment.accountId == accountId;
 		});
 
     return Q(payments).delay(500);

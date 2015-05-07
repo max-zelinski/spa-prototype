@@ -2,6 +2,7 @@
   "jspm": {
     "directories": {},
     "dependencies": {
+      "ascii-json": "npm:ascii-json@^0.2.0",
       "jsx": "github:floatdrop/plugin-jsx@^1.1.0",
       "lodash": "npm:lodash@^3.7.0",
       "memoize": "github:addyosmani/memoize.js@^0.1.1",
@@ -9,7 +10,7 @@
       "react": "npm:react@^0.13.2",
       "react-lensed-state": "npm:react-lensed-state@^0.1.2",
       "react-router": "npm:react-router@^0.13.2",
-      "react-transmit": "npm:react-transmit@2.5.4",
+      "react-transmit": "github:max-zelinski/react-transmit@2.6.2",
       "reflux": "npm:reflux@^0.2.7"
     },
     "devDependencies": {

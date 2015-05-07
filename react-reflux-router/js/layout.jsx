@@ -14,7 +14,7 @@ module.exports = React.createClass({
           </ul>
         </div>
 
-        <RouteHandler emptyView={<h4>Loading...</h4>}/>
+        <RouteHandler {...this.props}/>
       </div>
     );
   }

@@ -10,6 +10,9 @@ module.exports = (
     <Route name='app' path='/' handler={Layout}>
         <Route path='widgets' handler={Widgets} />
         <Route path='payments' handler={Payments} />
+        <Route path='payments' handler={Payments}>
+          <Route path=':account'/>
+        </Route>
         <Route path='accounts' handler={Accounts} />
     </Route>
 );
