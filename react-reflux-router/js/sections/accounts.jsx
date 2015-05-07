@@ -7,8 +7,8 @@ var Store = require('../stores/accountsStore'),
 
 var Accounts = React.createClass({
   mixins: [Reflux.listenTo(Store, 'onAccountsUpdated')],
-  onAccountsUpdated: function(refresh) {
-		this.props.refreshQuery(refresh);
+  onAccountsUpdated: function() {
+		this.props.setQueryParams();
 	},
   addAccount: function(e) {
     e.preventDefault();
