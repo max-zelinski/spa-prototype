@@ -13,6 +13,7 @@ module.exports.createContainer = function (Component, EmptyView, props) {
       };
     },
     componentWillReceiveProps: function(nextProps) {
+      console.log('componentWillReceiveProps');
       this.refs.t.setQueryParams(nextProps);
     },
     onLoading: function(promise) {
@@ -23,14 +24,18 @@ module.exports.createContainer = function (Component, EmptyView, props) {
       });
     },
     render: function() {
+      console.log('render');
       var props = this.props || {};
+      var queryParams = {
+        queryParams: props
+      };
       var utilProps = {
 				emptyView: EmptyView,
         onQuery: this.onLoading,
         isLoading: this.state.isLoading
       };
 
-      return React.createElement(transmit, assign([], props, utilProps, { ref: 't' }));
+      return React.createElement(transmit, assign({}, queryParams, utilProps, { ref: 't' }));
     }
   });
 
