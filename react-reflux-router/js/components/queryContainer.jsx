@@ -13,7 +13,6 @@ module.exports.createContainer = function (Component, EmptyView, props) {
       };
     },
     componentWillReceiveProps: function(nextProps) {
-      console.log('componentWillReceiveProps');
       this.refs.t.setQueryParams(nextProps);
     },
     onLoading: function(promise) {
@@ -30,7 +29,7 @@ module.exports.createContainer = function (Component, EmptyView, props) {
         queryParams: props
       };
       var utilProps = {
-				emptyView: EmptyView,
+        emptyView: EmptyView,
         onQuery: this.onLoading,
         isLoading: this.state.isLoading
       };
